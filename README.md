@@ -7,7 +7,7 @@ This pipeline accepts raw (or trimmed) reads in .fastq format and performs MLST 
 ## Basic usage:
 
     The typical command for running the pipeline is as follows:
-    nextflow run kviljoen/uct-srst2 --reads '*_R{1,2}.fastq.gz' -profile ilifu --mlst_db Pseudomonas_aeruginosa.fasta --mlst_definitions paeruginosa.txt --mlst_delimiter '_' --AMR_db ARGannot_r3.fasta --outdir Ps_aerug_srst2_MLST
+    nextflow run kviljoen/uct-srst2 --reads '*_R{1,2}.fastq.gz' -profile ilifu --mlst_db Pseudomonas_aeruginosa.fasta --mlst_definitions paeruginosa.txt --mlst_delimiter '_' --gene_db ARGannot_r3.fasta --outdir Ps_aerug_srst2_MLST
 
     Mandatory arguments:
       --reads			Path to input data (must be surrounded with quotes!)
@@ -18,6 +18,7 @@ This pipeline accepts raw (or trimmed) reads in .fastq format and performs MLST 
       --mlst_delimiter		Default="-" you may have to change to e.g. "_" depending on the format of your mlst reference file
       --mlst_db			Fasta file of MLST alleles (can be downloaded with getmlst.py from srst2 e.g. getmlst.py --species "Escherichia coli"   
       --gene_db			Antimicrobial resistence (or other e.g virulence) gene DB (Fasta) (can be downloaded from https://github.com/katholt/srst2/tree/master/data or created)
+      --forward                 Pattern that forward strain follow.
       
 
      Help:

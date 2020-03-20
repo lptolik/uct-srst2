@@ -83,6 +83,11 @@ if( params.gene_db ) {
         if( !gene_db.exists() ) exit 1, "Gene DB file could not be found: ${params.gene_db}"
 }
 
+if( params.forward ) {
+        forward = params.forward
+        reverse = forward.replaceFirst(/R1/, "R2")
+}
+
 // Returns a tuple of read pairs in the form
 // [sample_id, forward.fq, reverse.fq] where
 // the dataset_id is the shared prefix from
@@ -101,6 +106,7 @@ summary['Run Name']     = custom_runName ?: workflow.runName
 summary['Reads']        = params.reads
 if(params.mlst_db) summary['MLST DB'] = params.mlst_db
 if(params.gene_db) summary['Gene DB'] = params.gene_db
+if(params.foward) summary['Forward'] = params.forward
 summary['OS']		= System.getProperty("os.name")
 summary['OS.arch']	= System.getProperty("os.arch") 
 summary['OS.version']	= System.getProperty("os.version")
@@ -150,8 +156,10 @@ process srst2 {
     mlstDB = params.mlst_db ? "--mlst_db $mlst_db" : ''
     mlstdef = params.mlst_db ? "--mlst_definitions $mlst_definitions" : ''
     mlstdelim = params.mlst_db ? "--mlst_delimiter $params.mlst_delimiter" : ''
+    forward = params.forward ? "--forward $params.forward" : ''
+    reverse = params.forward ? "--reverse "+params.forward.replaceFirst(/R1/, "R2") : ''
     """
-    srst2 --input_pe $reads --output ${pairId}_srst2 --min_coverage $params.min_cov $mlstDB $mlstdef $mlstdelim $geneDB 
+    srst2 --input_pe $reads --output ${pairId}_srst2 $forward $reverse --min_coverage $params.min_cov $mlstDB $mlstdef $mlstdelim $geneDB 
     """
 }
 
